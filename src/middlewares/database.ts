@@ -17,7 +17,7 @@ interface AsyncPool extends Pool{
   queryAsync?: (arg1: string) => Promise<unknown>
 }
 const pool: AsyncPool = mysql.createPool(config)
-pool.getConnection((err, connection) => {
+/* pool.getConnection((err, connection) => {
     if(err){
         err.code === 'PROTOCOL_CONNECTION_LOST' && console.error('Database connection was closed.')
         err.code === 'ER_CON_COUNT_ERROR' && console.error('Database has too many connections.')
@@ -27,7 +27,7 @@ pool.getConnection((err, connection) => {
     connection && connection.release()
     return
 })
-
-pool.queryAsync = util.promisify(pool.query)
+ */
+//pool.queryAsync = util.promisify(pool.query)
 
 export default pool

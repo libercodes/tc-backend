@@ -11,20 +11,23 @@
   "author": "Liber Menna",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/express": "^4.17.6",
+    "@types/jsonwebtoken": "^8.3.9",
+    "@types/mongoose": "^5.7.15",
+    "@types/mongoose-unique-validator": "^1.0.4",
     "nodemon": "^2.0.3",
     "ts-node": "^8.9.1",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@types/mongoose": "^5.7.15",
-    "@types/mysql": "^2.15.10",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^4.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.12",
+    "mongoose-unique-validator": "^2.0.3",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0"
   }

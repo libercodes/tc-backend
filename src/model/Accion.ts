@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
-interface IAccion extends Document {
+export interface IAccion extends Document {
     nombre: string
 }
 const AccionSchema = new Schema({
@@ -10,6 +11,7 @@ const AccionSchema = new Schema({
     }
 })
 
+AccionSchema.plugin(uniqueValidator)
 export default mongoose.model<IAccion>('Accion', AccionSchema, 'acciones')
 
 

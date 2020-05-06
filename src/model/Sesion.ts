@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
-interface ISesion extends Document{
+export interface ISesion extends Document{
     usuario: mongoose.Schema.Types.ObjectId
     fechaDeInicio: Date
     fechaDeFinalizacion: Date

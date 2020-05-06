@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
-interface IPermiso extends Document{
+export interface IPermiso extends Document{
     grupo: mongoose.Schema.Types.ObjectId,
     accion: mongoose.Schema.Types.ObjectId
 }
