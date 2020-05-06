@@ -21,7 +21,7 @@ export const ConsultarAccion = async(): Promise<IAccion[]> => {
         console.error(error)
     }
 }
-export const AgregarAccion = async(accion: AccionType): Promise<object> => {
+export const AgregarAccion = async(accion: AccionType): Promise<IAccion> => {
     try {
         let objAccion = new Accion(accion)
         let savedAccion = await objAccion.save()
@@ -30,7 +30,7 @@ export const AgregarAccion = async(accion: AccionType): Promise<object> => {
         console.error(error)
     }
 }
-export const ModificarAccion = async(accion: AccionType): Promise<object> => {
+export const ModificarAccion = async(accion: AccionType): Promise<IAccion> => {
     try {
         let accionEncontrada = await Accion.findById(accion._id)
         if(accionEncontrada){
@@ -50,14 +50,14 @@ export const ModificarAccion = async(accion: AccionType): Promise<object> => {
 
     
 }
-export const EliminarAccion = async(accion_id: mongoose.Schema.Types.ObjectId): Promise<object> => {
+export const EliminarAccion = async(accion_id: mongoose.Schema.Types.ObjectId): Promise<IAccion> => {
     try {
         let poseePermisos: boolean = await ValidarAparicionEnPermisos(accion_id)
         if (!poseePermisos) {
             let deletedAccion = await Accion.findByIdAndDelete(accion_id)
             return deletedAccion
         }
-        return { error: "No se puede eliminar una accion que tiene permisos asociados"}
+        //return { error: "No se puede eliminar una accion que tiene permisos asociados"}
     } catch (error) {
         console.error(error)
     }

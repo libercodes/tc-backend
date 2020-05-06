@@ -10,7 +10,7 @@ const ValidarUsuariosAsociados = async(grupo_id: mongoose.Schema.Types.ObjectId)
 
 export const ConsultarGrupo = async(): Promise<IGrupo[]> => {
     try {
-        let grupos: IGrupo[] = await Grupo.find({})
+        let grupos: IGrupo[] = await Grupo.find()
         return grupos
     } catch (error) {
         console.error(error)
@@ -26,10 +26,24 @@ export const AgregarGrupo = async(grupo :GrupoType): Promise<IGrupo> => {
         console.log('Ha ocurrido un error al intentar crear el grupo')
     }
 }
-export const ModificarGrupo = async(grupo: GrupoType): Promise<object> => {
-    return grupo
+export const ModificarGrupo = async(grupo: GrupoType): Promise<IGrupo> => {
+    try {
+        let grupoEncontrado: IGrupo = await Grupo.findById(grupo._id)
+        if (grupoEncontrado) {
+            grupoEncontrado.nombre = grupo.nombre
+            try {
+                let updatedGrupo: IGrupo = await grupoEncontrado.save()
+                return updatedGrupo
+            } catch (error) {
+                console.error("Ocurrio un error al intentar actualizar el grupo.")
+            }
+        }
+    } catch (error) {
+        console.error(`No se ha encontrado el grupo ${grupo._id} que se intenta actualizar`)
+    }
+    //return grupo
 }
-export const EliminarGrupo = async(grupo_id: mongoose.Schema.Types.ObjectId): Promise<object> => {
+export const EliminarGrupo = async(grupo_id: mongoose.Schema.Types.ObjectId): Promise<IGrupo> => {
     let poseeUsuarios = await ValidarUsuariosAsociados(grupo_id)
     if(!poseeUsuarios){
         try {
@@ -39,6 +53,6 @@ export const EliminarGrupo = async(grupo_id: mongoose.Schema.Types.ObjectId): Pr
             console.error(error)
         }
     } else{
-        return { error: "No se puede eliminar un grupo con usuarios asociados"}
+        //return { error: "No se puede eliminar un grupo con usuarios asociados"}
     }
 }
