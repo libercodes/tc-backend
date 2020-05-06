@@ -23,7 +23,6 @@ router.delete('/eliminar-grupo', adminController.EliminarGrupo)
 //PERMISO
 router.get('/consultar-permiso', adminController.ConsultarPermiso)
 router.post('/agregar-permiso', adminController.AgregarPermiso)
-router.put('/modificar-permiso', adminController.ModficarPermiso)
 router.delete('/eliminar-permiso', adminController.EliminarPermiso)
 
 //MOVIMIENTOS

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 export interface UsuarioType{
-    _id?: string
+    _id?: mongoose.Schema.Types.ObjectId
     nombre: string
     apellido: string
     email: string
@@ -11,29 +11,29 @@ export interface UsuarioType{
 }
 
 export interface GrupoType {
-    _id?: string
+    _id?: mongoose.Schema.Types.ObjectId
     nombre: string
 }
 
 export interface AccionType {
-    _id?: string
+    _id?: mongoose.Schema.Types.ObjectId
     nombre: string
 }
 
 export interface PermisoType {
-    _id?: string
+    _id?: mongoose.Schema.Types.ObjectId
     grupo: mongoose.Schema.Types.ObjectId,
     accion: mongoose.Schema.Types.ObjectId
 }
 export interface SesionType {
-    _id?: string
+    _id?: mongoose.Schema.Types.ObjectId
     usuario: mongoose.Schema.Types.ObjectId
     fechaDeInicio: Date
     fechaDeFinalizacion: Date
 }
 
 export interface MovimientoType {
-    _id?: string
+    _id?: mongoose.Schema.Types.ObjectId
     fecha: Date,
     accion: mongoose.Schema.Types.ObjectId
     usuario: mongoose.Schema.Types.ObjectId
