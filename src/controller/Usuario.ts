@@ -1,12 +1,12 @@
-import { NextFunction } from "express"
+import { RequestHandler } from "express"
 
-export const Login = (req: Request, res: Response, next: NextFunction) => {
-
-}
-export const Logout = (req: Request, res: Response, next: NextFunction) => {
+export const Login:RequestHandler = ( req, res, next ) => {
 
 }
+export const Logout:RequestHandler = ( req, res, next ) => {
 
-export const RecuperarClave = (req: Request, res: Response, next: NextFunction) => {
+}
+
+export const RecuperarClave:RequestHandler = ( req, res, next ) => {
 
 }

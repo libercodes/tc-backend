@@ -1,4 +1,4 @@
-import express, { IRouter, IRoute, Application, Router, RequestHandler } from 'express'
+import express, { Router } from 'express'
 import * as adminController from '../controller/Admin'
 const router: Router = express.Router()
 

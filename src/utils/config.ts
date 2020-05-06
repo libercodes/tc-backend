@@ -1,8 +1,8 @@
-import mysql, { ConnectionConfig } from 'mysql'
-
+import dotenv from 'dotenv'
+dotenv.config()
 export const port: number = 5000;
 
-export const URI: string = "mongodb://localhost:27017/gruposur"
+export const URI: string = process.env.DB_URI
 export const TEST_URI: string = "mongodb://localhost:27017/gruposur-test"
 
 export const DB_CONFIG: { useNewUrlParser: boolean, useUnifiedTopology: boolean } = { useNewUrlParser: true, useUnifiedTopology: true }
@@ -15,9 +15,7 @@ export const crossOriginMiddleware = (req,res,next): void => {
 }
 
 
-export const ApplicationRun = (): void => {
-    console.log(`server running on port ${process.env.PORT}`)
-}
+
 
 
 

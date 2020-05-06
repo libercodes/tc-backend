@@ -1,11 +1,17 @@
-export const AgregarPermiso = () => {
+import Permiso from "../../model/Permiso"
+
+
+export const ConsultarPermiso = () => {
     
 }
-
-export const ModificarPermiso = () => {
-    
+export const AgregarPermiso = (permiso: Permiso): Permiso => {
+    return permiso
 }
 
-export const EliminarPermiso = () => {
-    
+export const ModificarPermiso = (permiso: Permiso): Permiso => {
+    return permiso  
+}
+
+export const EliminarPermiso = (permiso: Permiso): Permiso => {
+    return permiso
 }
