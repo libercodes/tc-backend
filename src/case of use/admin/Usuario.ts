@@ -5,19 +5,20 @@ import  mongoose from "mongoose"
 
 export const ConsultarUsuario = async(): Promise<IUsuario[]>=> {
     try {
-        let usuarios = await Usuario.find()
+        let usuarios: IUsuario[] = await Usuario.find()
         return usuarios
     } catch (error) {
         console.log('Ha ocurrido un error al intentar cargar los usuarios')
     }
 }
 export const AgregarUsuario = async (usuario: UsuarioType ): Promise<IUsuario> => {
-    let objUsuario = new Usuario(usuario)
     try {
+        let objUsuario = new Usuario(usuario)
         let savedUser = await objUsuario.save()
         return savedUser
     } catch (error) {
         console.log('Ha ocurrido un error al intentar crear el usuario')
+        console.error(error)
     }
 }
 export const ModificarUsuario = async(usuario: UsuarioType): Promise<IUsuario> => {
@@ -36,6 +37,7 @@ export const ModificarUsuario = async(usuario: UsuarioType): Promise<IUsuario> =
                 return updatedUser
             } catch (error) {
                 console.log(`No se ha podido encontrar al usuario que se intenta actualizar - id de usuario ${usuario._id}`)
+                console.error(error)
             }
         }
     } catch (error) {

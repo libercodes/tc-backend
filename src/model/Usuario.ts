@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
 export interface IUsuario extends Document{
     nombre: string
@@ -20,10 +21,12 @@ const UsuarioSchema = new Schema({
     },
     email: {
         type: String,
+        unique: true
     },
     nombreDeUsuario: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     clave: {
         type: String,
@@ -38,7 +41,7 @@ const UsuarioSchema = new Schema({
         ref: 'Grupo'
     }
 })
-
+UsuarioSchema.plugin(uniqueValidator)
 export default mongoose.model<IUsuario>('Usuario', UsuarioSchema, 'usuarios')
 
 
