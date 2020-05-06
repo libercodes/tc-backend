@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 export interface ISesion extends Document{
     usuario: mongoose.Schema.Types.ObjectId
     fechaDeInicio: Date
-    fechaDeFinalizacion: Date
+    fechaDeFinalizacion?: Date
 
 }
 const SesionSchema = new Schema({
@@ -18,7 +18,6 @@ const SesionSchema = new Schema({
     },
     fechaDeFinalizacion: {
         type: Date,
-        required: true
     }
 })
 

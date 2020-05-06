@@ -3,7 +3,7 @@ import { SesionType } from "../../utils/types";
 
 
 
-const AgregarSesion = async(sesion: SesionType): Promise<ISesion> => {
+export const AgregarSesion = async(sesion: SesionType): Promise<ISesion> => {
     try {
         let objSesion = new Sesion(sesion)
         let savedSesion:ISesion = await objSesion.save()
@@ -13,7 +13,7 @@ const AgregarSesion = async(sesion: SesionType): Promise<ISesion> => {
     }
 }
 
-const ModificarSesion = async(sesion: SesionType): Promise<ISesion> => {
+export const ModificarSesion = async(sesion: SesionType): Promise<ISesion> => {
     try {
         let sesionEncontrada: ISesion = await Sesion.findById(sesion._id)
         if (sesionEncontrada) {

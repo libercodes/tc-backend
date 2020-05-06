@@ -29,7 +29,7 @@ export interface SesionType {
     _id?: mongoose.Schema.Types.ObjectId
     usuario: mongoose.Schema.Types.ObjectId
     fechaDeInicio: Date
-    fechaDeFinalizacion: Date
+    fechaDeFinalizacion?: Date
 }
 
 export interface MovimientoType {
