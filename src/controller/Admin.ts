@@ -18,27 +18,29 @@ import { IGrupo } from "../model/Grupo"
 import { IMovimiento } from "../model/Movimiento"
 import { ISesion } from "../model/Sesion"
 import acciones from '../data/actions'
+//import VerificarPermisos from '../middlewares/VerificarPermisos'
+//import actions from "../data/actions"
 export const ConsultarUsuario:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
-    
-    const hasPermission = await Usuario.VerificarPermisos(req.grupoId, acciones.GESTIONAR_USUARIO.CONSULTAR_USUARIO)
+    //await VerificarPermisos(req,res,next, 'chatearusuarios')
+    //const hasPermission = await Usuario.VerificarPermisos(req.grupoId, acciones.GESTIONAR_USUARIO.CONSULTAR_USUARIO)
+    /* const hasPermission = await Usuario.VerificarPermisos(req.grupoId, 'aaaa')
     if(!hasPermission){
         console.error("No tienes permiso para realizar est accion")
         return
-    }
+    }  */
     let usuarios: IUsuario[] = await OperacionesUsuario.ConsultarUsuario()
     res.json(usuarios)
 }
 
 export const AgregarUsuario:RequestHandler = async( req, res, next ) => {
-    const hashedPassword = await bcrypt.hash(req.body.clave, 12)
-    const { nombre, apellido, email, nombreDeUsuario, grupo } = req.body
+    const { nombre, apellido, email, nombreDeUsuario, grupo, clave } = req.body
 
     let objUsuario:UsuarioType = {
         nombre: nombre,
         apellido: apellido,
         email: email,
         nombreDeUsuario: nombreDeUsuario,
-        clave: hashedPassword,
+        clave: clave,
         estado: 'nuevo',
         grupo: grupo
     }

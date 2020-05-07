@@ -1,11 +1,11 @@
 import express, { Router } from 'express'
 import * as adminController from '../controller/Admin'
 import isLoggedIn from '../middlewares/isLoggedIn'
-
+import VerificarPermisos from '../middlewares/VerificarPermisos'
 const router: Router = express.Router()
 
 //USUARIO
-router.get('/consultar-usuario', isLoggedIn, adminController.ConsultarUsuario)
+router.get('/consultar-usuario', isLoggedIn, VerificarPermisos('permiso falso'), adminController.ConsultarUsuario)
 router.post('/agregar-usuario', isLoggedIn, adminController.AgregarUsuario)
 router.put('/modficar-usuario', isLoggedIn, adminController.ModificarUsuario)
 router.delete('/eliminar-usuario', adminController.EliminarUsuario)

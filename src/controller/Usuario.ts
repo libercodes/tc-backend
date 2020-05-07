@@ -5,8 +5,8 @@ import mongoose from 'mongoose'
 
 export const Login:RequestHandler = async( req, res, next ) => {
 
-    const nombreDeUsuario:string = req.body
-    const clave:string = req.body
+    const nombreDeUsuario:string = req.body.nombreDeUsuario
+    const clave:string = req.body.clave
 
     const response: any = await OperacionesSesion.Login(nombreDeUsuario, clave)
     if (response.error) {

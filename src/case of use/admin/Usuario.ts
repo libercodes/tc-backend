@@ -1,10 +1,11 @@
 import { UsuarioType } from "../../utils/types"
 import Usuario, { IUsuario } from "../../model/Usuario"
 import  mongoose from "mongoose"
-
+import bcrypt from 'bcrypt'
 
 export const ConsultarUsuario = async(): Promise<IUsuario[]>=> {
     try {
+
         let usuarios: IUsuario[] = await Usuario.find()
         return usuarios
     } catch (error) {
@@ -13,6 +14,9 @@ export const ConsultarUsuario = async(): Promise<IUsuario[]>=> {
 }
 export const AgregarUsuario = async (usuario: UsuarioType ): Promise<IUsuario> => {
     try {
+        const hashedPassword = await bcrypt.hash(usuario.clave, 12)
+        usuario.clave = hashedPassword
+
         let objUsuario = new Usuario(usuario)
         let savedUser = await objUsuario.save()
         return savedUser
