@@ -16,17 +16,12 @@ CREATE TABLE Grupos (
     nombre VARCHAR(30) NOT NULL   
 )
 
-CREATE TABLE Acciones (
-    id_accion int AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
-)
 
 CREATE TABLE Permisos (
     id_permiso int AUTO_INCREMENT PRIMARY KEY,
-    id_accion int NOT NULL,
+    accion VARCHAR(30) NOT NULL,
     id_grupo int NOT NULL,
     FOREIGN KEY(id_grupo) REFERENCES Grupos(id_grupo)
-    FOREIGN KEY(id_accion) REFERENCES Acciones(id_accion)
 )
 
 CREATE TABLE Movimientos (

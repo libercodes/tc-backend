@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IMovimiento extends Document{
     fecha: Date,
-    accion: mongoose.Schema.Types.ObjectId
+    accion: string
     usuario: mongoose.Schema.Types.ObjectId
 }
 
@@ -12,8 +12,7 @@ const MovimientoSchema = new Schema({
         required: true
     },
     accion: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Accion",
+        type: String,
         required: true
     },
     usuario: {

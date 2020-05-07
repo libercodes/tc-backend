@@ -3,22 +3,28 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 //OPERACIONES
 import * as OperacionesUsuario from '../case of use/admin/Usuario'
-import * as OperacionesAccion from '../case of use/admin/Accion'
+//import * as OperacionesAccion from '../case of use/admin/Accion'
 import * as OperacionGrupo from '../case of use/admin/Grupo'
-import * as OperacionPermiso from '../case of use/admin/Permiso'
+//import * as OperacionPermiso from '../case of use/admin/Permiso'
 import * as OperacionMovimiento from '../case of use/admin/Movimiento'
 import * as OperacionSesion from '../case of use/admin/Sesion'
 
 //TYPES
-import { IUsuario } from "../model/Usuario"
-import { UsuarioType, AccionType, GrupoType, PermisoType } from "../utils/types"
-import { IAccion } from "../model/Accion"
+import Usuario, { IUsuario } from "../model/Usuario"
+import { UsuarioType, GrupoType, RequestWithCredentials } from "../utils/types"
+//import { IAccion } from "../model/Accion"
 import { IGrupo } from "../model/Grupo"
-import { IPermiso } from "../model/Permiso"
+//import { IPermiso } from "../model/Permiso"
 import { IMovimiento } from "../model/Movimiento"
 import { ISesion } from "../model/Sesion"
-
-export const ConsultarUsuario:RequestHandler = async( req, res, next ) => {
+import acciones from '../data/actions'
+export const ConsultarUsuario:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
+    
+    const hasPermission = await Usuario.VerificarPermisos(req.grupoId, acciones.GESTIONAR_USUARIO.CONSULTAR_USUARIO)
+    if(!hasPermission){
+        console.error("No tienes permiso para realizar est accion")
+        return
+    }
     let usuarios: IUsuario[] = await OperacionesUsuario.ConsultarUsuario()
     res.json(usuarios)
 }
@@ -75,7 +81,7 @@ export const EliminarUsuario:RequestHandler = async( req, res, next ) => {
     })
 }
 
-export const ConsultarAccion:RequestHandler = async( req, res, next ) => {
+/* export const ConsultarAccion:RequestHandler = async( req, res, next ) => {
     let acciones = await OperacionesAccion.ConsultarAccion()
     res.json(acciones)
 }
@@ -111,7 +117,7 @@ export const EliminarAccion:RequestHandler = async( req, res, next ) => {
         accion_id: response.id
     })
 }
-
+ */
 export const ConsultarGrupo:RequestHandler = async( req, res, next ) => {
     let grupos: IGrupo[] = await OperacionGrupo.ConsultarGrupo()
     res.json(grupos)
@@ -147,7 +153,7 @@ export const EliminarGrupo:RequestHandler = async( req, res, next ) => {
     })
 }
 
-export const ConsultarPermiso:RequestHandler = async( req, res, next ) => {
+/* export const ConsultarPermiso:RequestHandler = async( req, res, next ) => {
     let permisos: IPermiso[] = await OperacionPermiso.ConsultarPermiso()
     res.json(permisos)
 }
@@ -175,7 +181,7 @@ export const EliminarPermiso:RequestHandler = async( req, res, next ) => {
         message: "permiso eliminado",
         permiso_id: response.id
     })
-}
+} */
 
 export const ConsultarMovimientos: RequestHandler = async( req, res, next ) => {
     let movimientos: IMovimiento[] = await OperacionMovimiento.ConsultarMovimientos()

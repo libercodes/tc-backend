@@ -1,4 +1,4 @@
-import Permiso, { IPermiso } from "../../model/Permiso"
+/* import Permiso, { IPermiso } from "../../model/Permiso"
 import { PermisoType } from "../../utils/types"
 import mongoose from "mongoose"
 
@@ -37,4 +37,4 @@ export const EliminarPermiso = async(permiso_id: mongoose.Schema.Types.ObjectId)
     } catch (error) {
         console.error(`Ha ocurrido un error al intentar eliminar el permiso ${permiso_id}`)
     }
-}
+} */

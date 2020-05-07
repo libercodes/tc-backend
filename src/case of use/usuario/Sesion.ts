@@ -1,10 +1,13 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 //utils
-import Sesion from '../../model/Sesion'
+import Sesion, { ISesion } from '../../model/Sesion'
 import * as OperacionSesion from '../sistema/Sesion'
 import Usuario, { IUsuario } from '../../model/Usuario'
+import { ITokenPayload } from '../../utils/types'
+dotenv.config()
 
 
 
@@ -21,18 +24,18 @@ export const Login = async(nombreDeUsuario, clave): Promise<object> => {
         if(!isEqual){
             console.log('clave incorrecta')
         }else{
-            let token = jwt.sign({
-                nombreDeUsuario: usuarioEncontrado.nombreDeUsuario,
-                id: usuarioEncontrado.id
-            }, 
-            'secret',
-            { expiresIn: '1h' })
-            
             let fechaFin = new Date()
             fechaFin.setHours(fechaFin.getHours() + 1)
             console.log(fechaFin)
-            let sesion = await OperacionSesion.AgregarSesion({ usuario: usuarioEncontrado.id, fechaDeInicio: new Date(), fechaDeFinalizacion: fechaFin})
 
+            let sesion = await OperacionSesion.AgregarSesion({ usuario: usuarioEncontrado.id, fechaDeInicio: new Date(), fechaDeFinalizacion: fechaFin})
+            const payload: ITokenPayload = {
+                sesion: sesion.id,
+                usuario: usuarioEncontrado.id,
+                grupo: usuarioEncontrado.grupo
+            }
+            let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' })
+            
             return { token: token, id: usuarioEncontrado.id, sesion_id: sesion.id }
         }
 
@@ -48,7 +51,7 @@ export const Logout = async(sesion_id: mongoose.Schema.Types.ObjectId): Promise<
     
             let fechaFin: Date = obtenerFechaFin(sesionEncontrada.fechaDeFinalizacion)
     
-            let sesion = await OperacionSesion.ModificarSesion({
+            let sesion: ISesion = await OperacionSesion.ModificarSesion({
                 usuario: sesionEncontrada.usuario, 
                 fechaDeInicio: sesionEncontrada.fechaDeInicio,
                 fechaDeFinalizacion: fechaFin

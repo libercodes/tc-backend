@@ -1,4 +1,4 @@
-import Accion, { IAccion } from "../../model/Accion"
+/* import Accion, { IAccion } from "../../model/Accion"
 import { AccionType } from "../../utils/types"
 import Permiso from "../../model/Permiso"
 import mongoose from "mongoose"
@@ -62,3 +62,5 @@ export const EliminarAccion = async(accion_id: mongoose.Schema.Types.ObjectId): 
         console.error(error)
     }
 }
+
+ */

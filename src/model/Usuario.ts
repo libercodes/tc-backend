@@ -1,5 +1,7 @@
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Schema, Document, Model } from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
+import { UsuarioType } from '../utils/types'
+import Grupo, { IGrupo } from './Grupo'
 
 export interface IUsuario extends Document{
     nombre: string
@@ -9,6 +11,11 @@ export interface IUsuario extends Document{
     clave: string
     estado: string
     grupo?: mongoose.Schema.Types.ObjectId
+
+}
+
+interface IUsuarioModel extends Model<IUsuario>{
+    VerificarPermisos(user: mongoose.Schema.Types.ObjectId, action: string): Promise<boolean>
 }
 
 const UsuarioSchema = new Schema({
@@ -42,7 +49,16 @@ const UsuarioSchema = new Schema({
     }
 })
 UsuarioSchema.plugin(uniqueValidator)
-export default mongoose.model<IUsuario>('Usuario', UsuarioSchema, 'usuarios')
+
+UsuarioSchema.statics.VerificarPermisos = async function(grupo: mongoose.Schema.Types.ObjectId, accion: string): Promise<boolean> {
+    let grupoDelUsuario: IGrupo = await Grupo.findById(grupo)
+    let hasPermission: number = grupoDelUsuario.acciones.indexOf(accion)
+
+    return hasPermission === -1 ? false : true
+}
+
+const Usuario = mongoose.model<IUsuario, IUsuarioModel>('Usuario', UsuarioSchema, 'usuarios')
+export default Usuario
 
 
 

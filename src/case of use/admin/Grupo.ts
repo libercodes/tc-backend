@@ -17,7 +17,7 @@ export const ConsultarGrupo = async(): Promise<IGrupo[]> => {
     }
 }
 
-export const AgregarGrupo = async(grupo :GrupoType): Promise<IGrupo> => {
+export const AgregarGrupo = async(grupo: GrupoType): Promise<IGrupo> => {
     try {
         let objGrupo: IGrupo = new Grupo(grupo)
         let savedGrupo = await objGrupo.save()
@@ -31,6 +31,7 @@ export const ModificarGrupo = async(grupo: GrupoType): Promise<IGrupo> => {
         let grupoEncontrado: IGrupo = await Grupo.findById(grupo._id)
         if (grupoEncontrado) {
             grupoEncontrado.nombre = grupo.nombre
+            grupoEncontrado.acciones = grupo.acciones
             try {
                 let updatedGrupo: IGrupo = await grupoEncontrado.save()
                 return updatedGrupo
