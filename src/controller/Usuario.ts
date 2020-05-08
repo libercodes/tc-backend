@@ -38,5 +38,18 @@ export const RecuperarClave:RequestHandler = async( req, res, next ) => {
 }
 
 export const EstablecerNuevaClave:RequestHandler = async( req, res, next ) => {
+    const clave: string = req.body.clave
+    const token: string = req.get('Authorization')
+    try {
+        if(!token){
+            throw new Error('Enlace invalido')
+        }
+        await Operaciones.GestionarCuenta.EstablecerNuevaClave(clave, token)
+        res.json({
+            message: "Su clave ha sido actualizada correctamente",
     
+        })
+    } catch (error) {
+        next(error)
+    }
 }

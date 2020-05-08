@@ -1,7 +1,10 @@
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
-import Usuario from '../../model/Usuario'
+import Usuario, { IUsuario } from '../../model/Usuario'
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
+import { IError } from '../../utils/types'
+import bcrypt from 'bcrypt'
 dotenv.config()
 
 const smtpTransport = nodemailer.createTransport({
@@ -15,9 +18,7 @@ const smtpTransport = nodemailer.createTransport({
 export const ResetPassword = async(email: string): Promise<object> => {
     let usuarioEncontrado = await Usuario.findOne({ email: email })
     if(usuarioEncontrado){
-        let payload =  {
-            id: usuarioEncontrado.id
-        }
+        let payload =  usuarioEncontrado.id
         let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '2h'})
 
         smtpTransport.sendMail({
@@ -39,6 +40,17 @@ export const ResetPassword = async(email: string): Promise<object> => {
     return { message: "Si el mail que propocionaste existe, entonces en breve te llegara un enlace para reestablecer tu clave"}
 }
 
-export const EstablecerNuevaClave = async () => {
+export const EstablecerNuevaClave = async (clave: string, token: string): Promise<IUsuario> => {
     
+    let decodedToken: mongoose.Schema.Types.ObjectId = <mongoose.Schema.Types.ObjectId>jwt.verify(token, process.env.SECRET_KEY)
+    if(!decodedToken){
+        const error:IError = new Error('El enlace ha expirado')
+        error.statusCode = 401
+        throw error
+    }
+    let hashedPassword: string = await bcrypt.hash(clave, 12)
+    let usuarioEncontrado: IUsuario = await Usuario.findById(decodedToken)
+    usuarioEncontrado.clave = hashedPassword
+    let usuarioActualizado: IUsuario = await usuarioEncontrado.save()
+    return usuarioActualizado
 }
