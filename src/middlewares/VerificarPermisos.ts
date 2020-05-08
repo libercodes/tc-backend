@@ -4,7 +4,7 @@ import Usuario from "../model/Usuario";
 
 export default accion => async(req: RequestWithCredentials, res, next) => {
     try {
-        const hasPermission = await Usuario.VerificarPermisos(req.grupoId, accion)
+        const hasPermission: boolean = await Usuario.VerificarPermisos(req.grupoId, accion)
         if(!hasPermission){
             throw new Error("not authenticated")
         }else{

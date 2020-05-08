@@ -1,37 +1,81 @@
 import express, { Router } from 'express'
+///controllers
 import * as adminController from '../controller/Admin'
+//middlewares
 import isLoggedIn from '../middlewares/isLoggedIn'
 import VerificarPermisos from '../middlewares/VerificarPermisos'
+import { ValidarInputsUsuario, ValidarInputsGrupo } from '../middlewares/validations'
+//utils
+import actions from '../data/actions'
 const router: Router = express.Router()
 
 //USUARIO
-router.get('/consultar-usuario', isLoggedIn, VerificarPermisos('permiso falso'), adminController.ConsultarUsuario)
-router.post('/agregar-usuario', isLoggedIn, adminController.AgregarUsuario)
-router.put('/modficar-usuario', isLoggedIn, adminController.ModificarUsuario)
-router.delete('/eliminar-usuario', adminController.EliminarUsuario)
+router.get('/consultar-usuario', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_USUARIO.CONSULTAR_USUARIO), 
+    adminController.ConsultarUsuario
+)
 
-//ACCION
-/* router.get('/consultar-accion', isLoggedIn, adminController.ConsultarAccion)
-router.post('/agregar-accion', isLoggedIn, adminController.AgregarAccion)
-router.put('/modificar-accion', isLoggedIn, adminController.ModificarAccion)
-router.delete('/eliminar-accion', isLoggedIn, adminController.EliminarAccion) */
+router.post('/agregar-usuario', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_USUARIO.AGREGAR_USUARIO),
+    ValidarInputsUsuario,
+    adminController.AgregarUsuario
+)
+
+router.put('/modificar-usuario', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_USUARIO.MODIFICAR_USUARIO), 
+    ValidarInputsUsuario,
+    adminController.ModificarUsuario
+)
+
+router.delete('/eliminar-usuario', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_USUARIO.ELIMINAR_USUARIO), 
+    adminController.EliminarUsuario
+)
 
 //GRUPO
-router.get('/consultar-grupo', isLoggedIn, adminController.ConsultarGrupo)
-router.post('/agregar-grupo', isLoggedIn, adminController.AgregarGrupo)
-router.put('/modificar-grupo', isLoggedIn, adminController.ModificarGrupo)
-router.delete('/eliminar-grupo', isLoggedIn, adminController.EliminarGrupo)
+router.get('/consultar-grupo', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_GRUPO.CONSULTAR_GRUPO), 
+    adminController.ConsultarGrupo
+)
 
-//PERMISO
-/* router.get('/consultar-permiso', isLoggedIn, adminController.ConsultarPermiso)
-router.post('/agregar-permiso', isLoggedIn, adminController.AgregarPermiso)
-router.delete('/eliminar-permiso', isLoggedIn, adminController.EliminarPermiso) */
+
+router.post('/agregar-grupo', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_GRUPO.AGREGAR_GRUPO), 
+    ValidarInputsGrupo,
+    adminController.AgregarGrupo
+)
+
+
+router.put('/modificar-grupo', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_GRUPO.MODIFICAR_GRUPO), 
+    ValidarInputsGrupo,
+    adminController.ModificarGrupo
+)
+
+router.delete('/eliminar-grupo', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_GRUPO.ELIMINAR_GRUPO), 
+    adminController.EliminarGrupo
+)
 
 //MOVIMIENTOS
-router.get('/movimientos', isLoggedIn, adminController.ConsultarMovimientos)
+router.get('/movimientos', 
+    isLoggedIn,VerificarPermisos(actions.GESTIONAR_MOVIMIENTO.CONSULTAR_MOVIMIENTO), 
+    adminController.ConsultarMovimientos
+)
 
 //SESIONES
-router.get('/sesiones', isLoggedIn, adminController.ConsultarSesiones)
-
+router.get('/sesiones', 
+    isLoggedIn, 
+    VerificarPermisos(actions.GESTIONAR_SESION.CONSULTAR_SESION), 
+    adminController.ConsultarSesiones
+)
 
 export default router
