@@ -22,13 +22,3 @@ const SesionSchema = new Schema({
 })
 
 export default mongoose.model<ISesion>('Sesion', SesionSchema, 'sesiones')
-
-
-
-/* 
-export default class Sesion{
-    public id: string
-    public usuario: Usuario
-    public fechaDeInicio: Date
-    public fechaDeFinalizacion: Date
-} */

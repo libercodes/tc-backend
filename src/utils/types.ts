@@ -19,10 +19,6 @@ export interface GrupoType {
     acciones?: string[]
 }
 
-/* export interface AccionType {
-    _id?: mongoose.Schema.Types.ObjectId
-    nombre: string
-} */
 
 export interface PermisoType {
     _id?: mongoose.Schema.Types.ObjectId
@@ -44,7 +40,8 @@ export interface MovimientoType {
 }
 
 export interface IError extends Error {
-    statusCode?: number
+    statusCode?: number,
+    data?: any
 }
 
 export interface ITokenPayload {
@@ -72,14 +69,3 @@ export interface RequestHandlerWithAction
         (req: Request<P, ResBody, ReqBody, ReqQuery>, res: Response<ResBody>, next: NextFunction, action:string): any;
 
     }
-
-/* export interface RequesthandlerTEst
-    <P extends 
-        core.Params = core.ParamsDictionary, 
-        ResBody = any, 
-        ReqBody = any, 
-        ReqQuery = core.Query,
-        action = string
-    > 
-    extends core.RequestHandler <P, ResBody, ReqBody, ReqQuery, string> { }
- */

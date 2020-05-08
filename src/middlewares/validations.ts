@@ -1,4 +1,24 @@
-import { body } from 'express-validator'
+import { body, validationResult } from 'express-validator'
+import { IError } from '../utils/types'
+import { RequestHandler } from 'express'
+
+
+export const CheckValidations: RequestHandler = ( req, res, next): void => {
+    try {
+        let errores = validationResult(req)
+        let poseeErorres = !errores.isEmpty()
+    
+        if(poseeErorres){
+            const error: IError = new Error('Error de validacion')
+            error.data = errores.array()
+            error.statusCode = 422
+            throw error
+        } 
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
 
 export const ValidarInputsUsuario = [
     body('nombre', 'El nombre debe tener entre 2 y 30 caracteres')
@@ -40,4 +60,11 @@ export const ValidarInputsRecuperarClave = [
     body('email', 'Ingrese un mail valido')
         .isEmail()
         .normalizeEmail()
+]
+
+
+export const ValidarClave = [
+    body('clave')
+        .isString()
+        .isLength({ min: 6, max: 24 })
 ]

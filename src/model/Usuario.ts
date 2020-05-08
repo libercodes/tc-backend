@@ -59,20 +59,3 @@ UsuarioSchema.statics.VerificarPermisos = async function(grupo: mongoose.Schema.
 
 const Usuario = mongoose.model<IUsuario, IUsuarioModel>('Usuario', UsuarioSchema, 'usuarios')
 export default Usuario
-
-
-
-/* export default class Usuario{
-    constructor(){
-
-    }
-    public id: string
-    public nombre: string
-    public apellido: string
-    public email: string
-    public nombreDeUsuario: string
-    public clave: string
-    public estado: string
-    public grupo: Grupo
-
-} */
