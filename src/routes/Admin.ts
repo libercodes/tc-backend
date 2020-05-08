@@ -4,7 +4,7 @@ import * as adminController from '../controller/Admin'
 //middlewares
 import isLoggedIn from '../middlewares/isLoggedIn'
 import VerificarPermisos from '../middlewares/VerificarPermisos'
-import { ValidarInputsUsuario, ValidarInputsGrupo } from '../middlewares/validations'
+import { ValidarInputsUsuario, ValidarInputsGrupo, CheckValidations } from '../middlewares/validations'
 //utils
 import actions from '../data/actions'
 const router: Router = express.Router()
@@ -12,7 +12,7 @@ const router: Router = express.Router()
 //USUARIO
 router.get('/consultar-usuario', 
     isLoggedIn, 
-    VerificarPermisos(actions.GESTIONAR_USUARIO.CONSULTAR_USUARIO), 
+    VerificarPermisos(actions.GESTIONAR_USUARIO.CONSULTAR_USUARIO),
     adminController.ConsultarUsuario
 )
 
@@ -20,6 +20,7 @@ router.post('/agregar-usuario',
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_USUARIO.AGREGAR_USUARIO),
     ValidarInputsUsuario,
+    CheckValidations,
     adminController.AgregarUsuario
 )
 
@@ -27,6 +28,7 @@ router.put('/modificar-usuario',
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_USUARIO.MODIFICAR_USUARIO), 
     ValidarInputsUsuario,
+    CheckValidations,
     adminController.ModificarUsuario
 )
 
@@ -48,6 +50,7 @@ router.post('/agregar-grupo',
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_GRUPO.AGREGAR_GRUPO), 
     ValidarInputsGrupo,
+    CheckValidations,
     adminController.AgregarGrupo
 )
 
@@ -56,6 +59,7 @@ router.put('/modificar-grupo',
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_GRUPO.MODIFICAR_GRUPO), 
     ValidarInputsGrupo,
+    CheckValidations,
     adminController.ModificarGrupo
 )
 

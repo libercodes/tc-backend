@@ -6,6 +6,7 @@ import { crossOriginMiddleware } from './utils/config'
 import { ApplicationRun } from './controller/Application'
 import adminRoutes from './routes/Admin'
 import usuarioRoutes from './routes/Usuario'
+import ErrorHandlerMiddleware from './middlewares/ErrorHandlerMiddleware'
 dotenv.config()
 
 const app: Application = express()
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use(crossOriginMiddleware)
 app.use('/api/admin', adminRoutes)
 app.use('/api', usuarioRoutes)
+app.use(ErrorHandlerMiddleware)
 
 
 app.listen(process.env.PORT, ApplicationRun)
