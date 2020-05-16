@@ -8,8 +8,8 @@ import actions from '../data/actions'
 
 const createDefaultAdminUser = async (id_grupo: mongoose.Schema.Types.ObjectId) => {
     const objUsuario: UsuarioType = {
-        nombre: 'admin',
-        apellido: '',
+        nombre: 'liber',
+        apellido: 'menna',
         email: 'libermenna@gmail.com',
         nombreDeUsuario: 'administrador',
         estado: 'nuevo',

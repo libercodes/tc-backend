@@ -74,7 +74,7 @@ export const ModificarUsuario:RequestHandler = async( req, res, next ) => {
 }
 
 export const EliminarUsuario:RequestHandler = async( req, res, next ) => {
-    const id: mongoose.Schema.Types.ObjectId = req.body.id
+    const id: any = req.params.id
 
     try {
         let response = await Operaciones.GestionarUsuario.EliminarUsuario(id)

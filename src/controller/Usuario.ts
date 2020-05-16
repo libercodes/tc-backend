@@ -2,7 +2,6 @@ import { RequestHandler } from "express"
 import Operaciones from '../case of use/usuario/Operaciones'
 import mongoose from 'mongoose'
 import { RequestWithCredentials } from "../utils/types"
-import Usuario from "../model/Usuario"
 
 
 export const Login:RequestHandler = async( req, res, next ) => {
