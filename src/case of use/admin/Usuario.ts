@@ -1,4 +1,4 @@
-import { UsuarioType } from "../../utils/types"
+import { UsuarioType, UsuarioConGrupo } from "../../utils/types"
 import Usuario, { IUsuario } from "../../model/Usuario"
 import  mongoose from "mongoose"
 import bcrypt from 'bcrypt'
@@ -37,4 +37,27 @@ export const ModificarUsuario = async(usuario: UsuarioType): Promise<IUsuario> =
 export const EliminarUsuario = async(usuario_id: mongoose.Schema.Types.ObjectId): Promise<IUsuario> => {
     let deletedProduct = await Usuario.findByIdAndDelete(usuario_id)
     return deletedProduct
+}
+
+export const ObtenerDatosDeUnUsuario = async(id: any) => {
+    let usuarioEncontrado: any = await 
+        Usuario
+            .findById(id)
+            .populate('grupo')
+            .exec()
+
+    if (usuarioEncontrado) {
+        let payload: UsuarioConGrupo = {
+            _id: usuarioEncontrado.id,
+            nombreDeUsuario: usuarioEncontrado.nombreDeUsuario,
+            nombre: usuarioEncontrado.nombreDeUsuario,
+            apellido: usuarioEncontrado.apellido,
+            email: usuarioEncontrado.email,
+            estado: usuarioEncontrado.estado,
+            grupo: usuarioEncontrado.grupo
+        }
+        return payload
+    } else {
+        throw new Error('Usuario no encontrado')
+    }
 }

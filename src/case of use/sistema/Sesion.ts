@@ -1,6 +1,6 @@
 import Sesion, { ISesion } from "../../model/Sesion";
 import { SesionType } from "../../utils/types";
-
+import moment from 'moment'
 
 
 export const AgregarSesion = async(sesion: SesionType): Promise<ISesion> => {
@@ -15,7 +15,7 @@ export const ModificarSesion = async(sesion: SesionType): Promise<ISesion> => {
         sesionEncontrada.usuario = sesion.usuario
         sesionEncontrada.fechaDeInicio = sesion.fechaDeInicio
         sesionEncontrada.fechaDeFinalizacion = sesion.fechaDeFinalizacion
-
+        
         let updatedSesion: ISesion = await sesionEncontrada.save()
         return updatedSesion
     }

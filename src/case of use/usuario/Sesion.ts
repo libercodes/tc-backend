@@ -7,6 +7,8 @@ import Sesion, { ISesion } from '../../model/Sesion'
 import * as OperacionSesion from '../sistema/Sesion'
 import Usuario, { IUsuario } from '../../model/Usuario'
 import { ITokenPayload } from '../../utils/types'
+import Operaciones from '../admin/Operaciones'
+import moment from 'moment'
 dotenv.config()
 
 
@@ -39,8 +41,8 @@ export const Login = async(nombreDeUsuario, clave): Promise<object> => {
                 grupo: usuarioEncontrado.grupo
             }
             let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' })
-            
-            return { token: token, id: usuarioEncontrado.id, sesion_id: sesion.id }
+            let usuario = await Operaciones.GestionarUsuario.ObtenerDatosDeUnUsuario(usuarioEncontrado.id)
+            return { token: "bearer " + token, usuario: usuario }
         }
 
     }else{
@@ -49,16 +51,18 @@ export const Login = async(nombreDeUsuario, clave): Promise<object> => {
 }
 
 export const Logout = async(sesion_id: mongoose.Schema.Types.ObjectId): Promise<ISesion> => {
+    console.log('logout')
     let sesionEncontrada = await Sesion.findById(sesion_id)
     if(sesionEncontrada){
 
         let fechaFin: Date = obtenerFechaFin(sesionEncontrada.fechaDeFinalizacion)
-
         let sesion: ISesion = await OperacionSesion.ModificarSesion({
             usuario: sesionEncontrada.usuario, 
             fechaDeInicio: sesionEncontrada.fechaDeInicio,
-            fechaDeFinalizacion: fechaFin
+            fechaDeFinalizacion: fechaFin,
+            _id: sesion_id
         })
         return sesion
     }
 }
+

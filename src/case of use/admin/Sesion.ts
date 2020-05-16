@@ -6,6 +6,5 @@ export const ConsultarSesiones = async(): Promise<ISesion[]>=> {
             .find()
             .populate('usuario', 'nombreDeUsuario')
             .exec()
-    console.log(sesiones[0])
     return sesiones
 }
