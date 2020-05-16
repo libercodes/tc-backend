@@ -10,10 +10,10 @@ const createDefaultAdminUser = async (id_grupo: mongoose.Schema.Types.ObjectId) 
     const objUsuario: UsuarioType = {
         nombre: 'admin',
         apellido: '',
-        email: '',
-        nombreDeUsuario: 'admin',
+        email: 'libermenna@gmail.com',
+        nombreDeUsuario: 'administrador',
         estado: 'nuevo',
-        clave: 'root',
+        clave: 'root123',
         grupo: id_grupo
     }
     let savedUsuario = await AgregarUsuario(objUsuario)

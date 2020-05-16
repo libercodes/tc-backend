@@ -1,6 +1,8 @@
 import { RequestHandler } from "express"
 import Operaciones from '../case of use/usuario/Operaciones'
 import mongoose from 'mongoose'
+import { RequestWithCredentials } from "../utils/types"
+import Usuario from "../model/Usuario"
 
 
 export const Login:RequestHandler = async( req, res, next ) => {
@@ -14,8 +16,8 @@ export const Login:RequestHandler = async( req, res, next ) => {
         next(error)
     }
 }
-export const Logout:RequestHandler = async( req, res, next ) => {
-    const sesion_id: mongoose.Schema.Types.ObjectId = req.body.id
+export const Logout:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
+    const sesion_id: mongoose.Schema.Types.ObjectId = req.sesionId
     
     try {
         await Operaciones.GestionarSesion.Logout(sesion_id)
@@ -32,7 +34,7 @@ export const RecuperarClave:RequestHandler = async( req, res, next ) => {
         let response = await Operaciones.GestionarCuenta.ResetPassword(req.body.email)
         res.status(200).json(response)
     } catch (error) {
-        error.message("Ocurrio un error por favor intente mas tarde.")
+        error.message ="Ocurrio un error por favor intente mas tarde."
         next(error)
     }
 }

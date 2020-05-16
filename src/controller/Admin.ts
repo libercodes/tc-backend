@@ -129,7 +129,7 @@ export const ModificarGrupo:RequestHandler = async( req, res, next ) => {
 }
 
 export const EliminarGrupo:RequestHandler = async( req, res, next ) => {
-    const id: mongoose.Schema.Types.ObjectId = req.body.id
+    const id: any = req.params.id
     
     try {
         let response = await Operaciones.GestionarGrupo.EliminarGrupo(id)
@@ -158,6 +158,15 @@ export const ConsultarSesiones: RequestHandler = async( req, res, next ) => {
         res.json(sesiones)
     } catch (error) {
         error.message('Ocurrio un error al intentar cargar las sesiones')
+        next(error)
+    }
+}
+
+export const ObtenerDatosDeUnUsuario: RequestHandler = async( req: RequestWithCredentials, res, next) => {
+    try {
+        let response = await Operaciones.GestionarUsuario.ObtenerDatosDeUnUsuario(req.userId)
+        res.json(response)
+    } catch (error) {
         next(error)
     }
 }
