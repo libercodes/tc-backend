@@ -1,6 +1,7 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { Request, RequestHandler, Response, NextFunction } from 'express';
 import * as core from "express-serve-static-core";
+import { IUsuario } from '../model/Usuario';
 
 export interface UsuarioType{
     _id?: mongoose.Schema.Types.ObjectId
@@ -11,6 +12,15 @@ export interface UsuarioType{
     clave: string
     estado: string
     grupo?: mongoose.Schema.Types.ObjectId
+}
+export interface UsuarioConGrupo  {
+    _id: mongoose.Schema.Types.ObjectId
+    nombre: string
+    apellido: string
+    email: string
+    nombreDeUsuario: string
+    estado: string
+    grupo: GrupoType
 }
 
 export interface GrupoType {

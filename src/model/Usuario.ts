@@ -10,7 +10,7 @@ export interface IUsuario extends Document{
     nombreDeUsuario: string
     clave: string
     estado: string
-    grupo?: mongoose.Schema.Types.ObjectId
+    grupo: mongoose.Schema.Types.ObjectId
 
 }
 

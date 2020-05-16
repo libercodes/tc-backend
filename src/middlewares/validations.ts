@@ -49,11 +49,9 @@ export const ValidarInputsGrupo = [
 
 export const ValidarInputsLogin = [
     body('nombreDeUsuario', 'Ingrese un nombre de usuario valido')
+        .isString(),
+    body('clave', 'La clave es incorrecta')
         .isString()
-        .isLength({ min: 4, max: 30 }),
-    body('clave')
-        .isString()
-        .isLength({ min: 6, max: 24 })
 ]
 
 export const ValidarInputsRecuperarClave = [

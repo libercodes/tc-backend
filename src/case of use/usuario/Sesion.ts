@@ -8,7 +8,6 @@ import * as OperacionSesion from '../sistema/Sesion'
 import Usuario, { IUsuario } from '../../model/Usuario'
 import { ITokenPayload } from '../../utils/types'
 import Operaciones from '../admin/Operaciones'
-import moment from 'moment'
 dotenv.config()
 
 

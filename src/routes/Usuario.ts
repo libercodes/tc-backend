@@ -15,7 +15,6 @@ router.post('/logout',
     isLoggedIn, 
     usuarioController.Logout
 )
-
 router.post('/recuperar-clave', 
     ValidarInputsRecuperarClave, 
     CheckValidations,

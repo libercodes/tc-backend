@@ -10,6 +10,11 @@ import actions from '../data/actions'
 const router: Router = express.Router()
 
 //USUARIO
+router.get('/obtener-usuario', 
+    isLoggedIn,
+    adminController.ObtenerDatosDeUnUsuario
+)
+
 router.get('/consultar-usuario', 
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_USUARIO.CONSULTAR_USUARIO),
@@ -32,7 +37,7 @@ router.put('/modificar-usuario',
     adminController.ModificarUsuario
 )
 
-router.delete('/eliminar-usuario', 
+router.delete('/eliminar-usuario/:id', 
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_USUARIO.ELIMINAR_USUARIO), 
     adminController.EliminarUsuario
@@ -63,7 +68,7 @@ router.put('/modificar-grupo',
     adminController.ModificarGrupo
 )
 
-router.delete('/eliminar-grupo', 
+router.delete('/eliminar-grupo:id', 
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_GRUPO.ELIMINAR_GRUPO), 
     adminController.EliminarGrupo
