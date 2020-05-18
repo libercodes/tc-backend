@@ -1,23 +1,24 @@
 import { UsuarioType, UsuarioConGrupo } from "../../utils/types"
-import Usuario, { IUsuario } from "../../model/Usuario"
+import Usuario, { IUsuario, IUsuarioSinClave } from "../../model/Usuario"
 import  mongoose from "mongoose"
 import bcrypt from 'bcrypt'
 
-export const ConsultarUsuario = async(): Promise<IUsuario[]>=> {
-    let usuarios: IUsuario[] = await Usuario.find()
+
+export const ListarUsuarios = async(): Promise<IUsuarioSinClave[]>=> {
+    let usuarios: IUsuarioSinClave[] = await Usuario.find().select('nombre apellido email nombreDeUsuario estado grupo')
     return usuarios
 }
 
-export const AgregarUsuario = async (usuario: UsuarioType ): Promise<IUsuario> => {
+export const AgregarUsuario = async (usuario: UsuarioType ): Promise<IUsuarioSinClave> => {
     const hashedPassword = await bcrypt.hash(usuario.clave, 12)
     usuario.clave = hashedPassword
     let objUsuario = new Usuario(usuario)
     let savedUser = await objUsuario.save()
-    return savedUser
+    return savedUser.ObtenerUsuarioSinClave()
 }
 
-export const ModificarUsuario = async(usuario: UsuarioType): Promise<IUsuario> => {
-    let usuarioEncontrado = await Usuario.findById(usuario._id)
+export const ModificarUsuario = async(usuario: UsuarioType): Promise<IUsuarioSinClave> => {
+    let usuarioEncontrado: IUsuario = await Usuario.findById(usuario._id)
     if (usuarioEncontrado) {
         usuarioEncontrado.nombre = usuario.nombre
         usuarioEncontrado.apellido = usuario.apellido
@@ -27,16 +28,18 @@ export const ModificarUsuario = async(usuario: UsuarioType): Promise<IUsuario> =
         usuarioEncontrado.estado = usuario.estado
         usuarioEncontrado.grupo = usuario.grupo
         
-        let updatedUser = await usuarioEncontrado.save()
-        return updatedUser
+        let updatedUser: IUsuario = await usuarioEncontrado.save()
+        return updatedUser.ObtenerUsuarioSinClave()
     } else {
         throw new Error(`No se ha encontrado el usuario con id: ${usuario._id}`)
     }
 }
 
-export const EliminarUsuario = async(usuario_id: mongoose.Schema.Types.ObjectId): Promise<IUsuario> => {
-    let deletedProduct = await Usuario.findByIdAndDelete(usuario_id)
-    return deletedProduct
+export const EliminarUsuario = async(usuario_id: any): Promise<IUsuarioSinClave> => {
+    console.log(usuario_id)
+    let deletedProduct = await Usuario.findByIdAndDelete(mongoose.Types.ObjectId(usuario_id))
+    console.log(deletedProduct)
+    return deletedProduct.ObtenerUsuarioSinClave()
 }
 
 export const ObtenerDatosDeUnUsuario = async(id: any) => {

@@ -9,6 +9,7 @@ import Usuario, { IUsuario } from '../../model/Usuario'
 import { ITokenPayload } from '../../utils/types'
 import Operaciones from '../admin/Operaciones'
 dotenv.config()
+import moment from 'moment'
 
 
 
@@ -27,7 +28,6 @@ export const Login = async(nombreDeUsuario, clave): Promise<object> => {
         }else{
             let fechaFin = new Date()
             fechaFin.setHours(fechaFin.getHours() + 1)
-            console.log(fechaFin)
 
             let sesion = await OperacionSesion.AgregarSesion({ 
                 usuario: usuarioEncontrado.id, 
@@ -53,7 +53,7 @@ export const Logout = async(sesion_id: mongoose.Schema.Types.ObjectId): Promise<
     console.log('logout')
     let sesionEncontrada = await Sesion.findById(sesion_id)
     if(sesionEncontrada){
-
+        console.log('sesion encontrada')
         let fechaFin: Date = obtenerFechaFin(sesionEncontrada.fechaDeFinalizacion)
         let sesion: ISesion = await OperacionSesion.ModificarSesion({
             usuario: sesionEncontrada.usuario, 

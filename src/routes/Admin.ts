@@ -17,8 +17,8 @@ router.get('/obtener-usuario',
 
 router.get('/consultar-usuario', 
     isLoggedIn, 
-    VerificarPermisos(actions.GESTIONAR_USUARIO.CONSULTAR_USUARIO),
-    adminController.ConsultarUsuario
+    VerificarPermisos(actions.GESTIONAR_USUARIO.LISTAR_USUARIOS),
+    adminController.ListarUsuarios
 )
 
 router.post('/agregar-usuario', 
@@ -46,8 +46,8 @@ router.delete('/eliminar-usuario/:id',
 //GRUPO
 router.get('/consultar-grupo', 
     isLoggedIn, 
-    VerificarPermisos(actions.GESTIONAR_GRUPO.CONSULTAR_GRUPO), 
-    adminController.ConsultarGrupo
+    VerificarPermisos(actions.GESTIONAR_GRUPO.LISTAR_GRUPOS), 
+    adminController.ListarGrupos
 )
 
 
@@ -68,7 +68,7 @@ router.put('/modificar-grupo',
     adminController.ModificarGrupo
 )
 
-router.delete('/eliminar-grupo:id', 
+router.delete('/eliminar-grupo/:id', 
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_GRUPO.ELIMINAR_GRUPO), 
     adminController.EliminarGrupo
@@ -76,15 +76,15 @@ router.delete('/eliminar-grupo:id',
 
 //MOVIMIENTOS
 router.get('/movimientos', 
-    isLoggedIn,VerificarPermisos(actions.GESTIONAR_MOVIMIENTO.CONSULTAR_MOVIMIENTO), 
-    adminController.ConsultarMovimientos
+    isLoggedIn,VerificarPermisos(actions.GESTIONAR_MOVIMIENTO.LISTAR_MOVIMIENTOS), 
+    adminController.ListarMovimientos
 )
 
 //SESIONES
 router.get('/sesiones', 
     isLoggedIn, 
-    VerificarPermisos(actions.GESTIONAR_SESION.CONSULTAR_SESION), 
-    adminController.ConsultarSesiones
+    VerificarPermisos(actions.GESTIONAR_SESION.LISTAR_SESIONES), 
+    adminController.ListarSesiones
 )
 
 export default router

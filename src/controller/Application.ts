@@ -28,17 +28,17 @@ const init = async():Promise<any> => {
             nombre: "root",
             acciones: [
                 actions.GESTIONAR_USUARIO.AGREGAR_USUARIO,
-                actions.GESTIONAR_USUARIO.CONSULTAR_USUARIO,
+                actions.GESTIONAR_USUARIO.LISTAR_USUARIOS,
                 actions.GESTIONAR_USUARIO.MODIFICAR_USUARIO,
                 actions.GESTIONAR_USUARIO.ELIMINAR_USUARIO,
                 
                 actions.GESTIONAR_GRUPO.AGREGAR_GRUPO,
-                actions.GESTIONAR_GRUPO.CONSULTAR_GRUPO,
+                actions.GESTIONAR_GRUPO.LISTAR_GRUPOS,
                 actions.GESTIONAR_GRUPO.MODIFICAR_GRUPO,
                 actions.GESTIONAR_GRUPO.ELIMINAR_GRUPO,
                 
-                actions.GESTIONAR_MOVIMIENTO.CONSULTAR_MOVIMIENTO,
-                actions.GESTIONAR_SESION.CONSULTAR_SESION
+                actions.GESTIONAR_MOVIMIENTO.LISTAR_MOVIMIENTOS,
+                actions.GESTIONAR_SESION.LISTAR_SESIONES
             ]
         }
         let savedGrupo: IGrupo = await AgregarGrupo(objGrupo)

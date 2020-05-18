@@ -4,16 +4,16 @@ import bcrypt from 'bcrypt'
 //Casos de uso
 import Operaciones from '../case of use/admin/Operaciones'
 //TYPES
-import  { IUsuario } from "../model/Usuario"
+import  { IUsuario, IUsuarioSinClave } from "../model/Usuario"
 import { UsuarioType, GrupoType, RequestWithCredentials } from "../utils/types"
 import { IGrupo } from "../model/Grupo"
 import { IMovimiento } from "../model/Movimiento"
 import { ISesion } from "../model/Sesion"
 
 
-export const ConsultarUsuario:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
+export const ListarUsuarios:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     try {
-        let usuarios: IUsuario[] = await Operaciones.GestionarUsuario.ConsultarUsuario()
+        let usuarios: IUsuarioSinClave[] = await Operaciones.GestionarUsuario.ListarUsuarios()
         res.json(usuarios)
     } catch (error) {
         error.message = "ocurrio un error al intentar cargar los usuarios"
@@ -36,9 +36,9 @@ export const AgregarUsuario:RequestHandler = async( req, res, next ) => {
     }
 
     try {
-        let response: IUsuario = await Operaciones.GestionarUsuario.AgregarUsuario(objUsuario)
+        let response: IUsuarioSinClave = await Operaciones.GestionarUsuario.AgregarUsuario(objUsuario)
         res.json({
-            message: "usuario creado",
+            message: "El usuario ha sido agregado.",
             usuario: response
         })
     } catch (error) {
@@ -64,8 +64,8 @@ export const ModificarUsuario:RequestHandler = async( req, res, next ) => {
     try {
         let response = await Operaciones.GestionarUsuario.ModificarUsuario(objUsuario)
         res.json({
-            message: "usuario actualizado",
-            usuario_id: response.id
+            message: "El usuario ha sido actualizado.",
+            usuario: response
         })
     } catch (error) {
         error.message("Ocurrio un error al intentar actualizar el usuario")
@@ -75,22 +75,23 @@ export const ModificarUsuario:RequestHandler = async( req, res, next ) => {
 
 export const EliminarUsuario:RequestHandler = async( req, res, next ) => {
     const id: any = req.params.id
-
+    console.log(id)
     try {
         let response = await Operaciones.GestionarUsuario.EliminarUsuario(id)
+        console.log(response)
         res.json({
-            message: "usuario eliminado",
-            usuario_id: response.id
+            message: "El usuario ha sido eliminado.",
+            usuario_id: response._id
         })
     } catch (error) {
-        error.message("Ocurrio un error al intentar eliminar el usuario")
+        error.message = "Ocurrio un error al intentar eliminar el usuario"
         next(error)
     }
 }
 
-export const ConsultarGrupo:RequestHandler = async( req, res, next ) => {
+export const ListarGrupos:RequestHandler = async( req, res, next ) => {
     try {
-        let grupos: IGrupo[] = await Operaciones.GestionarGrupo.ConsultarGrupo()
+        let grupos: IGrupo[] = await Operaciones.GestionarGrupo.ListarGrupos()
         res.json(grupos)
     } catch (error) {
         error.message = "Ocurrio un error al intentar cargar los grupos"
@@ -104,8 +105,8 @@ export const AgregarGrupo:RequestHandler = async( req, res, next ) => {
     try {
         let response = await Operaciones.GestionarGrupo.AgregarGrupo(objGrupo)
         res.json({
-            message: "grupo agregado",
-            grupo_id: response
+            message: "El grupo ha sido agregado correctamente.",
+            grupo: response
         })
     } catch (error) {
         error.message('ocurrio un error al intentar agregar el grupo')
@@ -114,13 +115,12 @@ export const AgregarGrupo:RequestHandler = async( req, res, next ) => {
 }
 
 export const ModificarGrupo:RequestHandler = async( req, res, next ) => {
-    let objGrupo: GrupoType = { nombre: req.body.nombre }
-    
+    let objGrupo: GrupoType = { nombre: req.body.nombre, _id: req.body._id }
     try {
         let response = await Operaciones.GestionarGrupo.ModificarGrupo(objGrupo)
         res.json({
-            message: "grupo modificado",
-            grupo_id: response.id
+            message: "El grupo ha sido modificado correctamente",
+            grupo: response
         })
     } catch (error) {
         error.message('ocurrio un error al intentar actualizar el grupo')   
@@ -135,16 +135,16 @@ export const EliminarGrupo:RequestHandler = async( req, res, next ) => {
         let response = await Operaciones.GestionarGrupo.EliminarGrupo(id)
         res.json({
             message: "grupo eliminado",
-            grupo_id: response.id
+            grupo_id: response._id
         })
     } catch (error) {
         next(error)
     }
 }
 
-export const ConsultarMovimientos: RequestHandler = async( req, res, next ) => {
+export const ListarMovimientos: RequestHandler = async( req, res, next ) => {
     try {
-        let movimientos: IMovimiento[] = await Operaciones.GestionarMovimiento.ConsultarMovimientos()
+        let movimientos: IMovimiento[] = await Operaciones.GestionarMovimiento.ListarMovimientos()
         res.json(movimientos)
     } catch (error) {
         error.message('Ocurrio un error al intentar cargar los movimientos')
@@ -152,9 +152,9 @@ export const ConsultarMovimientos: RequestHandler = async( req, res, next ) => {
     }
 }
 
-export const ConsultarSesiones: RequestHandler = async( req, res, next ) => {
+export const ListarSesiones: RequestHandler = async( req, res, next ) => {
     try {
-        let sesiones: ISesion[] = await Operaciones.GestionarSesion.ConsultarSesiones()
+        let sesiones: ISesion[] = await Operaciones.GestionarSesion.ListarSesiones()
         res.json(sesiones)
     } catch (error) {
         error.message('Ocurrio un error al intentar cargar las sesiones')

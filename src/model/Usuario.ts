@@ -11,9 +11,19 @@ export interface IUsuario extends Document{
     clave: string
     estado: string
     grupo: mongoose.Schema.Types.ObjectId
+    ObtenerUsuarioSinClave(): IUsuarioSinClave
 
 }
+export interface IUsuarioSinClave{
+    _id: any
+    nombre: string
+    apellido: string
+    email: string
+    nombreDeUsuario: string
+    estado: string
+    grupo: mongoose.Schema.Types.ObjectId
 
+}
 interface IUsuarioModel extends Model<IUsuario>{
     VerificarPermisos(user: mongoose.Schema.Types.ObjectId, action: string): Promise<boolean>
 }
@@ -55,6 +65,17 @@ UsuarioSchema.statics.VerificarPermisos = async function(grupo: mongoose.Schema.
     let hasPermission: number = grupoDelUsuario.acciones.indexOf(accion)
 
     return hasPermission === -1 ? false : true
+}
+UsuarioSchema.methods.ObtenerUsuarioSinClave = function (): IUsuarioSinClave {
+    return {
+        _id: this.id,
+        nombre: this.nombre,
+        apellido: this.apellido,
+        email: this.email,
+        nombreDeUsuario: this.nombreDeUsuario,
+        estado: this.estado,
+        grupo: this.grupo
+    }
 }
 
 const Usuario = mongoose.model<IUsuario, IUsuarioModel>('Usuario', UsuarioSchema, 'usuarios')

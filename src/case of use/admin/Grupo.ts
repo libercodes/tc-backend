@@ -8,7 +8,7 @@ const ValidarUsuariosAsociados = async(grupo_id: mongoose.Schema.Types.ObjectId)
     return usuarioEncontrado ? true : false
 }
 
-export const ConsultarGrupo = async(): Promise<IGrupo[]> => {
+export const ListarGrupos = async(): Promise<IGrupo[]> => {
     let grupos: IGrupo[] = await Grupo.find()
     return grupos
 }
@@ -23,7 +23,7 @@ export const ModificarGrupo = async(grupo: GrupoType): Promise<IGrupo> => {
     let grupoEncontrado: IGrupo = await Grupo.findById(grupo._id)
     if (grupoEncontrado) {
         grupoEncontrado.nombre = grupo.nombre
-        grupoEncontrado.acciones = grupo.acciones
+        grupoEncontrado.acciones = grupo.acciones ? grupo.acciones : grupoEncontrado.acciones
 
 
         let updatedGrupo: IGrupo = await grupoEncontrado.save()

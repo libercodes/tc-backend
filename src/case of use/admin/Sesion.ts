@@ -1,6 +1,6 @@
 import Sesion, { ISesion } from "../../model/Sesion"
 
-export const ConsultarSesiones = async(): Promise<ISesion[]>=> {
+export const ListarSesiones = async(): Promise<ISesion[]>=> {
     let sesiones = await 
         Sesion
             .find()
