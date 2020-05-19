@@ -1,14 +1,16 @@
 import { RequestHandler } from "express"
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
 //Casos de uso
 import Operaciones from '../case of use/admin/Operaciones'
+import * as OperacionesMovimientos from '../case of use/sistema/Movimiento'
+//UTILS
+import * as generadorDeMovimientos from '../utils/generadorMovimiento'
 //TYPES
 import  { IUsuario, IUsuarioSinClave } from "../model/Usuario"
 import { UsuarioType, GrupoType, RequestWithCredentials } from "../utils/types"
 import { IGrupo } from "../model/Grupo"
-import { IMovimiento } from "../model/Movimiento"
-import { ISesion } from "../model/Sesion"
+import Movimiento, { IMovimiento } from "../model/Movimiento"
+import Sesion, { ISesion } from "../model/Sesion"
 
 
 export const ListarUsuarios:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
@@ -21,7 +23,7 @@ export const ListarUsuarios:RequestHandler = async( req: RequestWithCredentials,
     }
 }
 
-export const AgregarUsuario:RequestHandler = async( req, res, next ) => {
+export const AgregarUsuario:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
 
     const { nombre, apellido, email, nombreDeUsuario, grupo, clave } = req.body
 
@@ -31,12 +33,13 @@ export const AgregarUsuario:RequestHandler = async( req, res, next ) => {
         email: email,
         nombreDeUsuario: nombreDeUsuario,
         clave: clave,
-        estado: 'nuevo',
+        estado: 'Nuevo',
         grupo: grupo
     }
 
     try {
         let response: IUsuarioSinClave = await Operaciones.GestionarUsuario.AgregarUsuario(objUsuario)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.AgregarUsuario(response))
         res.json({
             message: "El usuario ha sido agregado.",
             usuario: response
@@ -47,22 +50,22 @@ export const AgregarUsuario:RequestHandler = async( req, res, next ) => {
     }
 }
 
-export const ModificarUsuario:RequestHandler = async( req, res, next ) => {
-    const { nombre, apellido, email, nombreDeUsuario, grupo, clave } = req.body
-    const hashedPassword = await bcrypt.hash(clave, 12)
+export const ModificarUsuario:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
+    const { nombre, apellido, email, nombreDeUsuario, grupo, _id, estado } = req.body
 
-    let objUsuario:UsuarioType = {
+    let objUsuario:IUsuarioSinClave = {
+        _id: _id,
         nombre: nombre,
         apellido: apellido,
         email: email,
         nombreDeUsuario: nombreDeUsuario,
-        clave: hashedPassword,
-        estado: 'nuevo',
+        estado: estado,
         grupo: grupo
     }
 
     try {
         let response = await Operaciones.GestionarUsuario.ModificarUsuario(objUsuario)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarUsuario(response, objUsuario))
         res.json({
             message: "El usuario ha sido actualizado.",
             usuario: response
@@ -73,12 +76,14 @@ export const ModificarUsuario:RequestHandler = async( req, res, next ) => {
     }
 }
 
-export const EliminarUsuario:RequestHandler = async( req, res, next ) => {
+export const EliminarUsuario:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     const id: any = req.params.id
     console.log(id)
     try {
         let response = await Operaciones.GestionarUsuario.EliminarUsuario(id)
-        console.log(response)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.EliminarUsuario(response))
+        /* Sesion.deleteMany({ usuario: response._id })
+        Movimiento.deleteMany({ usuario: response._id }) */
         res.json({
             message: "El usuario ha sido eliminado.",
             usuario_id: response._id
@@ -99,11 +104,12 @@ export const ListarGrupos:RequestHandler = async( req, res, next ) => {
     }
 }
 
-export const AgregarGrupo:RequestHandler = async( req, res, next ) => {
+export const AgregarGrupo:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     let objGrupo: GrupoType = { nombre: req.body.nombre }
-
+    
     try {
         let response = await Operaciones.GestionarGrupo.AgregarGrupo(objGrupo)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.AgregarGrupo(response))
         res.json({
             message: "El grupo ha sido agregado correctamente.",
             grupo: response
@@ -114,10 +120,11 @@ export const AgregarGrupo:RequestHandler = async( req, res, next ) => {
     }
 }
 
-export const ModificarGrupo:RequestHandler = async( req, res, next ) => {
+export const ModificarGrupo:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     let objGrupo: GrupoType = { nombre: req.body.nombre, _id: req.body._id }
     try {
         let response = await Operaciones.GestionarGrupo.ModificarGrupo(objGrupo)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarGrupo(response, objGrupo))
         res.json({
             message: "El grupo ha sido modificado correctamente",
             grupo: response
@@ -128,11 +135,29 @@ export const ModificarGrupo:RequestHandler = async( req, res, next ) => {
     }
 }
 
-export const EliminarGrupo:RequestHandler = async( req, res, next ) => {
+export const ModificarPermisos:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
+    let objGrupo: GrupoType = { acciones: req.body.acciones, _id: req.body._id }
+    try {
+        let response = await Operaciones.GestionarGrupo.ModificarPermisos(objGrupo)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarPermisos(response, objGrupo))
+
+        res.json({
+            message: "Los permisos han sido modificados correctamente.",
+            grupo: response
+        })
+    } catch (error) {
+        error.message('ocurrio un error al intentar modificar los permisos del grupo')   
+        next(error)
+    }
+}
+
+export const EliminarGrupo:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     const id: any = req.params.id
     
     try {
         let response = await Operaciones.GestionarGrupo.EliminarGrupo(id)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.EliminarGrupo(response))
+
         res.json({
             message: "grupo eliminado",
             grupo_id: response._id

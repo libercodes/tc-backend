@@ -12,7 +12,7 @@ const createDefaultAdminUser = async (id_grupo: mongoose.Schema.Types.ObjectId) 
         apellido: 'menna',
         email: 'libermenna@gmail.com',
         nombreDeUsuario: 'administrador',
-        estado: 'nuevo',
+        estado: 'Nuevo',
         clave: 'root123',
         grupo: id_grupo
     }

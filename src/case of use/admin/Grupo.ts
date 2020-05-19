@@ -2,6 +2,8 @@ import Grupo, { IGrupo } from "../../model/Grupo"
 import { GrupoType } from "../../utils/types"
 import Usuario from "../../model/Usuario"
 import mongoose from 'mongoose'
+import * as OperacionesMovimientos from '../sistema/Movimiento'
+
 
 const ValidarUsuariosAsociados = async(grupo_id: mongoose.Schema.Types.ObjectId): Promise<boolean> => {
     let usuarioEncontrado = await Usuario.findOne({ grupo: grupo_id })
@@ -23,12 +25,23 @@ export const ModificarGrupo = async(grupo: GrupoType): Promise<IGrupo> => {
     let grupoEncontrado: IGrupo = await Grupo.findById(grupo._id)
     if (grupoEncontrado) {
         grupoEncontrado.nombre = grupo.nombre
-        grupoEncontrado.acciones = grupo.acciones ? grupo.acciones : grupoEncontrado.acciones
 
 
         let updatedGrupo: IGrupo = await grupoEncontrado.save()
         return updatedGrupo
     }else{
+        throw new Error(`No se ha encontrado un grupo con el id ${grupo._id}`)
+    }
+}
+
+export const ModificarPermisos = async(grupo: GrupoType): Promise<IGrupo> => {
+    let grupoEncontrado: IGrupo = await Grupo.findById(grupo._id)
+    if (grupoEncontrado) {
+        grupoEncontrado.acciones = grupo.acciones
+
+        let updatedGrupo: IGrupo = await grupoEncontrado.save()
+        return updatedGrupo
+    } else {
         throw new Error(`No se ha encontrado un grupo con el id ${grupo._id}`)
     }
 }

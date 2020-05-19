@@ -2,7 +2,7 @@ import { RequestHandler } from "express"
 import Operaciones from '../case of use/usuario/Operaciones'
 import mongoose from 'mongoose'
 import { RequestWithCredentials } from "../utils/types"
-
+import Sesion from '../model/Sesion'
 
 export const Login:RequestHandler = async( req, res, next ) => {
     const nombreDeUsuario:string = req.body.nombreDeUsuario

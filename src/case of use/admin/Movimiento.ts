@@ -1,6 +1,6 @@
-import Movimiento, { IMovimiento } from "../../model/Movimiento"
+import Movimiento, { IMovimiento, IMovimientoConUsuario } from "../../model/Movimiento"
 
 export const ListarMovimientos = async(): Promise<IMovimiento[]> => {
-    let movimientos = await Movimiento.find({})
+    let movimientos: IMovimiento[] = await Movimiento.find().populate('usuario', 'nombreDeUsuario')
     return movimientos
 }

@@ -25,7 +25,7 @@ export interface UsuarioConGrupo  {
 
 export interface GrupoType {
     _id?: mongoose.Schema.Types.ObjectId
-    nombre: string,
+    nombre?: string,
     acciones?: string[]
 }
 

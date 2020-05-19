@@ -6,6 +6,15 @@ export interface ISesion extends Document{
     fechaDeFinalizacion?: Date
 
 }
+export interface ISesionConUsuario extends Document{
+    usuario: {
+        nombreDeUsuario: string
+    }
+    fechaDeInicio: Date
+    fechaDeFinalizacion?: Date
+
+}
+
 const SesionSchema = new Schema({
     usuario: {
         type: mongoose.Schema.Types.ObjectId,

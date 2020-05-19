@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 
 
 export const ListarUsuarios = async(): Promise<IUsuarioSinClave[]>=> {
-    let usuarios: IUsuarioSinClave[] = await Usuario.find().select('nombre apellido email nombreDeUsuario estado grupo')
+    let usuarios: IUsuarioSinClave[] = await Usuario.find().select('nombre apellido email nombreDeUsuario estado grupo').populate('grupo')
     return usuarios
 }
 
@@ -17,14 +17,13 @@ export const AgregarUsuario = async (usuario: UsuarioType ): Promise<IUsuarioSin
     return savedUser.ObtenerUsuarioSinClave()
 }
 
-export const ModificarUsuario = async(usuario: UsuarioType): Promise<IUsuarioSinClave> => {
+export const ModificarUsuario = async(usuario: IUsuarioSinClave): Promise<IUsuarioSinClave> => {
     let usuarioEncontrado: IUsuario = await Usuario.findById(usuario._id)
     if (usuarioEncontrado) {
         usuarioEncontrado.nombre = usuario.nombre
         usuarioEncontrado.apellido = usuario.apellido
         usuarioEncontrado.email = usuario.email
         usuarioEncontrado.nombreDeUsuario = usuario.nombreDeUsuario
-        usuarioEncontrado.clave = usuario.clave
         usuarioEncontrado.estado = usuario.estado
         usuarioEncontrado.grupo = usuario.grupo
         

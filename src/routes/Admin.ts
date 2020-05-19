@@ -4,7 +4,7 @@ import * as adminController from '../controller/Admin'
 //middlewares
 import isLoggedIn from '../middlewares/isLoggedIn'
 import VerificarPermisos from '../middlewares/VerificarPermisos'
-import { ValidarInputsUsuario, ValidarInputsGrupo, CheckValidations } from '../middlewares/validations'
+import { ValidarInputsUsuario, ValidarInputsGrupo, CheckValidations, ValidarInputsUsuarioModificar } from '../middlewares/validations'
 //utils
 import actions from '../data/actions'
 const router: Router = express.Router()
@@ -15,7 +15,7 @@ router.get('/obtener-usuario',
     adminController.ObtenerDatosDeUnUsuario
 )
 
-router.get('/consultar-usuario', 
+router.get('/listar-usuarios', 
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_USUARIO.LISTAR_USUARIOS),
     adminController.ListarUsuarios
@@ -32,7 +32,7 @@ router.post('/agregar-usuario',
 router.put('/modificar-usuario', 
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_USUARIO.MODIFICAR_USUARIO), 
-    ValidarInputsUsuario,
+    ValidarInputsUsuarioModificar,
     CheckValidations,
     adminController.ModificarUsuario
 )
@@ -44,7 +44,7 @@ router.delete('/eliminar-usuario/:id',
 )
 
 //GRUPO
-router.get('/consultar-grupo', 
+router.get('/listar-grupos', 
     isLoggedIn, 
     VerificarPermisos(actions.GESTIONAR_GRUPO.LISTAR_GRUPOS), 
     adminController.ListarGrupos
@@ -74,6 +74,11 @@ router.delete('/eliminar-grupo/:id',
     adminController.EliminarGrupo
 )
 
+router.put('/modificar-permisos',
+    isLoggedIn,
+    VerificarPermisos(actions.GESTIONAR_GRUPO.MODIFICAR_GRUPO),
+    adminController.ModificarPermisos
+)
 //MOVIMIENTOS
 router.get('/movimientos', 
     isLoggedIn,VerificarPermisos(actions.GESTIONAR_MOVIMIENTO.LISTAR_MOVIMIENTOS), 
