@@ -26,6 +26,9 @@ export const Login = async(nombreDeUsuario, clave): Promise<object> => {
         if(!isEqual){
             throw new Error('Clave incorrecta.')
         }else{
+            if (usuarioEncontrado.estado === "Inactivo") {
+                throw new Error('Su cuenta esta inactiva. Por favor contactese con un administrador.')
+            }
             let fechaFin = new Date()
             fechaFin.setHours(fechaFin.getHours() + 1)
 
