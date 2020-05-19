@@ -21,26 +21,28 @@ export const AgregarGrupo = async(grupo: GrupoType): Promise<IGrupo> => {
     return savedGrupo
 }
 
-export const ModificarGrupo = async(grupo: GrupoType): Promise<IGrupo> => {
+export const ModificarGrupo = async(grupo: GrupoType): Promise<IGrupo[]> => {
     let grupoEncontrado: IGrupo = await Grupo.findById(grupo._id)
     if (grupoEncontrado) {
+        let grupoAntiguo = { ...grupoEncontrado.toObject() }
         grupoEncontrado.nombre = grupo.nombre
 
 
         let updatedGrupo: IGrupo = await grupoEncontrado.save()
-        return updatedGrupo
+        return [ updatedGrupo, grupoAntiguo ]
     }else{
         throw new Error(`No se ha encontrado un grupo con el id ${grupo._id}`)
     }
 }
 
-export const ModificarPermisos = async(grupo: GrupoType): Promise<IGrupo> => {
+export const ModificarPermisos = async(grupo: GrupoType): Promise<IGrupo[]> => {
     let grupoEncontrado: IGrupo = await Grupo.findById(grupo._id)
     if (grupoEncontrado) {
+        let grupoAntiguo: IGrupo = { ...grupoEncontrado.toObject() }
         grupoEncontrado.acciones = grupo.acciones
 
         let updatedGrupo: IGrupo = await grupoEncontrado.save()
-        return updatedGrupo
+        return [ updatedGrupo, grupoAntiguo ] 
     } else {
         throw new Error(`No se ha encontrado un grupo con el id ${grupo._id}`)
     }
@@ -48,6 +50,7 @@ export const ModificarPermisos = async(grupo: GrupoType): Promise<IGrupo> => {
 
 export const EliminarGrupo = async(grupo_id: mongoose.Schema.Types.ObjectId): Promise<IGrupo> => {
     let poseeUsuarios = await ValidarUsuariosAsociados(grupo_id)
+    console.log(poseeUsuarios)
     if(!poseeUsuarios){
         let deletedGrupo:IGrupo = await Grupo.findByIdAndDelete(grupo_id)
         return deletedGrupo

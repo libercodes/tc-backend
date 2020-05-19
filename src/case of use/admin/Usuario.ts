@@ -17,9 +17,10 @@ export const AgregarUsuario = async (usuario: UsuarioType ): Promise<IUsuarioSin
     return savedUser.ObtenerUsuarioSinClave()
 }
 
-export const ModificarUsuario = async(usuario: IUsuarioSinClave): Promise<IUsuarioSinClave> => {
+export const ModificarUsuario = async(usuario: IUsuarioSinClave): Promise<IUsuarioSinClave[]> => {
     let usuarioEncontrado: IUsuario = await Usuario.findById(usuario._id)
     if (usuarioEncontrado) {
+        let usuarioAntiguo: IUsuario = { ...usuarioEncontrado.toObject() }
         usuarioEncontrado.nombre = usuario.nombre
         usuarioEncontrado.apellido = usuario.apellido
         usuarioEncontrado.email = usuario.email
@@ -28,7 +29,7 @@ export const ModificarUsuario = async(usuario: IUsuarioSinClave): Promise<IUsuar
         usuarioEncontrado.grupo = usuario.grupo
         
         let updatedUser: IUsuario = await usuarioEncontrado.save()
-        return updatedUser.ObtenerUsuarioSinClave()
+        return [ updatedUser.ObtenerUsuarioSinClave(), usuarioAntiguo ]
     } else {
         throw new Error(`No se ha encontrado el usuario con id: ${usuario._id}`)
     }

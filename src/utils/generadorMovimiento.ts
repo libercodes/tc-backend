@@ -9,27 +9,29 @@ export const ModificarUsuario = (usuario: IUsuarioSinClave, usuarioAntiguo: IUsu
     return `
         Se modifico el usuario ${usuario.nombreDeUsuario} con el id: ${usuario.nombreDeUsuario}.<br/>
         <br>
-        
-        <b>[Datos Anteriores]</b>
-        <br/>
-        <br/>
-        <b>nombre:</b> ${usuarioAntiguo.nombre}<br/>
-        <b>apellido:</b> ${usuarioAntiguo.apellido}<br/>
-        <b>email:</b> ${usuarioAntiguo.email}<br/>
-        <b>grupo:</b> ${usuarioAntiguo.grupo}<br/>
-        <b>estado:</b> ${usuarioAntiguo.estado}<br/>
-        <b>nombre de usuario:</b> ${usuarioAntiguo.nombreDeUsuario}<br/>
-        <br/>
-        <b>[Datos Nuevos]</b>
-        <br/>
-        <br/>
-        <b>nombre:</b> ${usuario.nombre}<br/>
-        <b>apellido:</b> ${usuario.apellido}<br/>
-        <b>email:</b> ${usuario.email}<br/>
-        <b>grupo:</b> ${usuario.grupo}<br/>
-        <b>estado:</b> ${usuario.estado}<br/>
-        <b>nombre de usuario:</b> ${usuario.nombreDeUsuario}
-
+        <div class="d-flex flex-row">
+            <div>
+                <b>[Datos Anteriores]</b>
+                <br/>
+                <b>nombre:</b> ${usuarioAntiguo.nombre}<br/>
+                <b>apellido:</b> ${usuarioAntiguo.apellido}<br/>
+                <b>email:</b> ${usuarioAntiguo.email}<br/>
+                <b>grupo:</b> ${usuarioAntiguo.grupo}<br/>
+                <b>estado:</b> ${usuarioAntiguo.estado}<br/>
+                <b>nombre de usuario:</b> ${usuarioAntiguo.nombreDeUsuario}<br/>
+            </div>
+            <br/>
+            <div>
+                <b>[Datos Nuevos]</b>
+                <br/>
+                <b>nombre:</b> ${usuario.nombre}<br/>
+                <b>apellido:</b> ${usuario.apellido}<br/>
+                <b>email:</b> ${usuario.email}<br/>
+                <b>grupo:</b> ${usuario.grupo}<br/>
+                <b>estado:</b> ${usuario.estado}<br/>
+                <b>nombre de usuario:</b> ${usuario.nombreDeUsuario}
+            </div>
+        </div>
     `
 
 }
@@ -61,22 +63,18 @@ export const ModificarPermisos = (grupo: GrupoType, grupoAntiguo: GrupoType) => 
         <br/>
         <br/>
         <div class="d-flex flex-row">
-            <div>
+            <div class="mx-2">
                 <b>[Datos Anteriores]</b>
                 <br/>
-                <b>acciones:</b> 
-                    <ul>
-                        ${grupoAntiguo.acciones.map(accion => `<br>${accion}`)}
-                    </ul>
+                <b>acciones:</b> <br/>
+                ${grupoAntiguo.acciones.map(accion => `<br>${accion}`)}
             </div>
             <br/>
-            <div>
+            <div class="mx-2">
                 <b>[Datos Nuevos]</b>
                 <br/>
-                <b>acciones:</b> 
-                    <ul>
-                        ${grupo.acciones.map(accion => `<br>${accion}`)}
-                    </ul>
+                <b>acciones:</b> <br/>
+                ${grupo.acciones.map(accion => `<br>${accion}`)}
             </div>
         </div>
 `       

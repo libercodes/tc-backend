@@ -53,6 +53,7 @@ export const EstablecerNuevaClave = async (clave: string, token: string): Promis
     let hashedPassword: string = await bcrypt.hash(clave, 12)
     let usuarioEncontrado: IUsuario = await Usuario.findById(decodedToken.id)
     usuarioEncontrado.clave = hashedPassword
+    usuarioEncontrado.estado = usuarioEncontrado.estado === "Nuevo" ? "Activo" : "Inactivo"
     let usuarioActualizado: IUsuario = await usuarioEncontrado.save()
     return usuarioActualizado
 }

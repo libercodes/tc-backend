@@ -64,14 +64,14 @@ export const ModificarUsuario:RequestHandler = async( req: RequestWithCredential
     }
 
     try {
-        let response = await Operaciones.GestionarUsuario.ModificarUsuario(objUsuario)
-        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarUsuario(response, objUsuario))
+        let [ response, usuarioAntiguo ] = await Operaciones.GestionarUsuario.ModificarUsuario(objUsuario)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarUsuario(response, usuarioAntiguo))
         res.json({
             message: "El usuario ha sido actualizado.",
             usuario: response
         })
     } catch (error) {
-        error.message("Ocurrio un error al intentar actualizar el usuario")
+        error.message = "Ocurrio un error al intentar actualizar el usuario"
         next(error)
     }
 }
@@ -123,8 +123,8 @@ export const AgregarGrupo:RequestHandler = async( req: RequestWithCredentials, r
 export const ModificarGrupo:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     let objGrupo: GrupoType = { nombre: req.body.nombre, _id: req.body._id }
     try {
-        let response = await Operaciones.GestionarGrupo.ModificarGrupo(objGrupo)
-        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarGrupo(response, objGrupo))
+        let [ response, grupoAntiguo ] = await Operaciones.GestionarGrupo.ModificarGrupo(objGrupo)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarGrupo(response, grupoAntiguo))
         res.json({
             message: "El grupo ha sido modificado correctamente",
             grupo: response
@@ -138,8 +138,8 @@ export const ModificarGrupo:RequestHandler = async( req: RequestWithCredentials,
 export const ModificarPermisos:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     let objGrupo: GrupoType = { acciones: req.body.acciones, _id: req.body._id }
     try {
-        let response = await Operaciones.GestionarGrupo.ModificarPermisos(objGrupo)
-        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarPermisos(response, objGrupo))
+        let [ response, grupoAntiguo ] = await Operaciones.GestionarGrupo.ModificarPermisos(objGrupo)
+        OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.ModificarPermisos(response, grupoAntiguo))
 
         res.json({
             message: "Los permisos han sido modificados correctamente.",
