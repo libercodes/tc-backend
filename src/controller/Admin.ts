@@ -78,7 +78,6 @@ export const ModificarUsuario:RequestHandler = async( req: RequestWithCredential
 
 export const EliminarUsuario:RequestHandler = async( req: RequestWithCredentials, res, next ) => {
     const id: any = req.params.id
-    console.log(id)
     try {
         let response = await Operaciones.GestionarUsuario.EliminarUsuario(id)
         OperacionesMovimientos.AgregarMovimiento(req.userId, generadorDeMovimientos.EliminarUsuario(response))

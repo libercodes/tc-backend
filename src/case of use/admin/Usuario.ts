@@ -36,9 +36,7 @@ export const ModificarUsuario = async(usuario: IUsuarioSinClave): Promise<IUsuar
 }
 
 export const EliminarUsuario = async(usuario_id: any): Promise<IUsuarioSinClave> => {
-    console.log(usuario_id)
     let deletedProduct = await Usuario.findByIdAndDelete(mongoose.Types.ObjectId(usuario_id))
-    console.log(deletedProduct)
     return deletedProduct.ObtenerUsuarioSinClave()
 }
 

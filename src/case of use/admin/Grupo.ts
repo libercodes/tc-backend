@@ -50,7 +50,6 @@ export const ModificarPermisos = async(grupo: GrupoType): Promise<IGrupo[]> => {
 
 export const EliminarGrupo = async(grupo_id: mongoose.Schema.Types.ObjectId): Promise<IGrupo> => {
     let poseeUsuarios = await ValidarUsuariosAsociados(grupo_id)
-    console.log(poseeUsuarios)
     if(!poseeUsuarios){
         let deletedGrupo:IGrupo = await Grupo.findByIdAndDelete(grupo_id)
         return deletedGrupo

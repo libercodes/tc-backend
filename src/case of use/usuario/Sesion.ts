@@ -53,10 +53,8 @@ export const Login = async(nombreDeUsuario, clave): Promise<object> => {
 }
 
 export const Logout = async(sesion_id: mongoose.Schema.Types.ObjectId): Promise<ISesion> => {
-    console.log('logout')
     let sesionEncontrada = await Sesion.findById(sesion_id)
     if(sesionEncontrada){
-        console.log('sesion encontrada')
         let fechaFin: Date = obtenerFechaFin(sesionEncontrada.fechaDeFinalizacion)
         let sesion: ISesion = await OperacionSesion.ModificarSesion({
             usuario: sesionEncontrada.usuario, 
