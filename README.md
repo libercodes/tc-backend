@@ -5,7 +5,7 @@ DB_HOST=
 DB_URI=
 SECRET_KEY=secretKeyLong
 MAIL_SERVICE=Gmail
-MAIL_USER=noreply.libercodes@gmail.com
+MAIL_USER=
 MAIL_PASSWORD=
 URL_FRONTEND=http://localhost:3000
 
